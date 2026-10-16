@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+    function validProfile() {
+      return request.resource.data.keys().hasAll(['displayName', 'tariff', 'budget', 'createdAt', 'updatedAt'])
+        && request.resource.data.keys().hasOnly(['displayName', 'tariff', 'budget', 'createdAt', 'updatedAt'])
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() >= 1
+        && request.resource.data.displayName.size() <= 60
+        && request.resource.data.tariff is number
+        && request.resource.data.tariff > 0 && request.resource.data.tariff <= 100000
+        && request.resource.data.budget is int
+        && request.resource.data.budget >= 0 && request.resource.data.budget <= 1000000000
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt == request.time;
+    }
+    function validDevice() {
+      return request.resource.data.keys().hasAll(['name', 'category', 'watt', 'hoursPerDay', 'daysPerMonth', 'quantity', 'createdAt', 'updatedAt'])
+        && request.resource.data.keys().hasOnly(['name', 'category', 'watt', 'hoursPerDay', 'daysPerMonth', 'quantity', 'createdAt', 'updatedAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 1 && request.resource.data.name.size() <= 60
+        && request.resource.data.category in ['Pendingin', 'Penerangan', 'Dapur', 'Elektronik', 'Lainnya']
+        && request.resource.data.watt is number
+        && request.resource.data.watt > 0 && request.resource.data.watt <= 50000
+        && request.resource.data.hoursPerDay is number
+        && request.resource.data.hoursPerDay >= 0 && request.resource.data.hoursPerDay <= 24
+        && request.resource.data.daysPerMonth is int
+        && request.resource.data.daysPerMonth >= 1 && request.resource.data.daysPerMonth <= 31
+        && request.resource.data.quantity is int
+        && request.resource.data.quantity >= 1 && request.resource.data.quantity <= 100
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt == request.time;
+    }
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && validProfile()
+        && request.resource.data.createdAt == request.time;
+      allow update: if isOwner(uid) && validProfile()
+        && request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if false;
+      match /devices/{deviceId} {
+        allow read: if isOwner(uid);
+        allow create: if isOwner(uid) && validDevice()
+          && request.resource.data.createdAt == request.time;
+        allow update: if isOwner(uid) && validDevice()
+          && request.resource.data.createdAt == resource.data.createdAt;
+        allow delete: if isOwner(uid);
+      }
+    }
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

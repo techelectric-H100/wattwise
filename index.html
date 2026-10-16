@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b36">
+  <meta name="description" content="WattWise, pengelola dan simulator estimasi konsumsi listrik bulanan berbasis Firebase.">
+  <title>WattWise — Listrik lebih terukur</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <svg class="svg-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-9 11h7l-1 9 10-12h-7l1-8Z"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v6m6-6v6M7 9h10v3a5 5 0 0 1-10 0V9Zm5 8v4"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4m0 16h16M8 16l4-5 3 2 5-7"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 3a2 2 0 0 1 2 2v1a7 7 0 0 1 2 1l1-.5a2 2 0 0 1 2.7.7 2 2 0 0 1-.7 2.7l-1 .6v3l1 .6a2 2 0 0 1-2 3.4l-1-.5a7 7 0 0 1-2 1v1a2 2 0 0 1-4 0v-1a7 7 0 0 1-2-1l-1 .5a2 2 0 0 1-2-3.4l1-.6v-3l-1-.6a2 2 0 0 1 2-3.4l1 .5a7 7 0 0 1 2-1V5a2 2 0 0 1 2-2Z"/><circle cx="12" cy="12" r="2.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m5 12 14 0m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-out" viewBox="0 0 24 24"><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5m4-4 5-5-5-5m5 5H9"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="15" rx="3"/><path d="M3 10h18M7 6V4h12"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M20 4C9 4 4 9 4 15a5 5 0 0 0 5 5c6 0 11-5 11-16ZM4 20c2-5 7-9 12-12"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-9v.1"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v4h16v-4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 3h4l1 4H9l1-4ZM6 7l1 14h10l1-14M10 11v6m4-6v6"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 17.5V20h3l12-12-3-3L4 17.5Zm11-13 2-2 3 3-2 2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3 9 8 11 5-2 8-6 8-11V5l-8-3Zm-4 9 3 3 5-5"/></symbol>
+  </svg>
+
+  <section id="auth-view" class="auth-page">
+    <div class="auth-story">
+      <div class="auth-story-inner">
+        <a class="brand brand-white" href="./"><span class="brand-mark"><svg class="icon"><use href="#i-bolt"/></svg></span><span>Watt<span class="brand-accent">Wise</span></span></a>
+        <div class="story-content">
+          <span class="story-pill">✦ SMART ENERGY PLANNER</span>
+          <h1>Lebih paham listrik,<br><em>lebih mudah hemat.</em></h1>
+          <p>Catat perangkat, hitung estimasi biaya bulanan, dan temukan peluang penghematan dari satu dashboard.</p>
+          <div class="story-art">
+            <div class="mini-chart"><span>ESTIMASI PENGHEMATAN</span><strong>Mulai dari kebiasaan kecil</strong><div class="mini-bars"><i style="height:38%"></i><i style="height:66%"></i><i style="height:45%"></i><i style="height:86%"></i><i style="height:60%"></i><i style="height:100%"></i><i style="height:72%"></i></div></div>
+            <div class="floating-stat"><span class="floating-emoji">⚡</span><span><small>Penggunaan</small><strong>Terukur, bukan tebak-tebakan</strong></span></div>
+          </div>
+        </div>
+        <div class="story-footer">by Haikal</div>
+      </div>
+    </div>
+    <div class="auth-form-col">
+      <div class="auth-panel">
+        <span class="overline">SELAMAT DATANG 👋</span>
+        <h2 id="auth-title">Masuk ke WattWise</h2>
+        <p id="auth-description" class="muted">Kelola pemakaian listrikmu dengan lebih cerdas.</p>
+        <div id="config-hint" class="notice notice-amber" hidden><svg class="icon"><use href="#i-info"/></svg><span>Firebase belum diatur. Kamu tetap bisa mencoba <b>Mode Demo</b> tanpa akun.</span></div>
+        <form id="auth-form" class="form-stack">
+          <div id="auth-name-wrap" class="field" hidden><label for="auth-name">Nama lengkap</label><input id="auth-name" type="text" maxlength="60" placeholder="Nama kamu" autocomplete="name"></div>
+          <div class="field"><label for="auth-email">Alamat email</label><input id="auth-email" type="email" placeholder="nama@email.com" autocomplete="email" required></div>
+          <div id="auth-password-wrap" class="field"><div class="field-heading"><label for="auth-password">Password</label><button type="button" id="forgot-password" class="text-link">Lupa password?</button></div><input id="auth-password" type="password" minlength="6" placeholder="Minimal 6 karakter" autocomplete="current-password" required></div>
+          <div id="auth-error" class="form-error" role="alert" hidden></div>
+          <button id="auth-submit" type="submit" class="btn btn-primary btn-full">Masuk <svg class="icon"><use href="#i-arrow"/></svg></button>
+        </form>
+        <div class="auth-divider"><span>ATAU</span></div>
+        <button id="demo-button" type="button" class="btn btn-outline btn-full">✨ Coba Mode Demo</button>
+        <p class="auth-switch" id="auth-switch-wrap">Belum punya akun? <button class="text-link strong-link" type="button" id="auth-toggle">Daftar sekarang</button></p>
+        <p class="auth-legal">Mode Demo menyimpan data hanya di browser ini. Akun Firebase menyimpan data online secara pribadi.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="app-view" class="app-layout" hidden>
+    <aside id="sidebar" class="sidebar">
+      <a class="brand brand-white" href="#dashboard" data-go="dashboard"><span class="brand-mark"><svg class="icon"><use href="#i-bolt"/></svg></span><span>Watt<span class="brand-accent">Wise</span></span></a>
+      <div class="side-label">MENU UTAMA</div>
+      <nav class="side-nav" aria-label="Navigasi utama">
+        <button class="nav-link active" data-nav="dashboard"><svg class="icon"><use href="#i-grid"/></svg> Ringkasan</button>
+        <button class="nav-link" data-nav="devices"><svg class="icon"><use href="#i-plug"/></svg> Perangkat listrik</button>
+        <button class="nav-link" data-nav="simulator"><svg class="icon"><use href="#i-chart"/></svg> Simulasi hemat</button>
+      </nav>
+      <div class="side-label side-label-secondary">AKUN</div>
+      <nav class="side-nav"><button class="nav-link" data-nav="settings"><svg class="icon"><use href="#i-settings"/></svg> Pengaturan</button></nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-tip"><span>💡 TIPS HEMAT</span><p>Kurangi jam penggunaan perangkat berdaya besar untuk menekan estimasi tagihan.</p><span class="tip-art">↗</span></div>
+      <button id="logout-button" class="logout-btn"><svg class="icon"><use href="#i-out"/></svg> Keluar</button>
+    </aside>
+    <button id="mobile-overlay" class="mobile-overlay" aria-label="Tutup menu" hidden></button>
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left"><button id="menu-button" class="icon-button mobile-menu" aria-label="Buka menu"><svg class="icon"><use href="#i-menu"/></svg></button><div class="breadcrumb">Workspace <span>/</span> <b id="breadcrumb-page">Ringkasan</b></div></div>
+        <div class="topbar-right"><span id="mode-badge" class="mode-badge">DEMO</span><span class="user-avatar" id="user-avatar">W</span><div class="top-user"><strong id="top-user-name">Pengguna</strong><small id="top-user-caption">Akun pribadi</small></div></div>
+      </header>
+      <div class="page-body">
+        <div class="page-heading"><div><span id="page-overline" class="overline">OVERVIEW</span><h1 id="page-title">Ringkasan energi</h1><p class="muted" id="page-subtitle">Pantau estimasi konsumsi dan biaya listrik bulananmu.</p></div><div id="header-action"><button class="btn btn-primary" data-add-device><svg class="icon"><use href="#i-plus"/></svg> Tambah perangkat</button></div></div>
+
+        <section id="page-dashboard" class="page-section">
+          <div class="hero-banner"><div class="hero-text"><span class="hero-eyebrow">⚡ WATTWISE INSIGHT</span><h2>Setiap watt punya cerita.<br><em>Mulai hemat dari data.</em></h2><p>Lihat perkiraan pemakaian berdasarkan perangkat yang kamu catat.</p><button class="hero-btn" data-go="simulator">Coba simulasi hemat <svg class="icon"><use href="#i-arrow"/></svg></button></div><div class="hero-illustration" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-bolt"><svg class="icon"><use href="#i-bolt"/></svg></div><span class="orbit-dot orbit-dot-a"></span><span class="orbit-dot orbit-dot-b"></span></div></div>
+          <div class="metrics-grid">
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon metric-purple"><svg class="icon"><use href="#i-bolt"/></svg></span><span class="metric-period">/ bulan</span></div><span class="metric-label">Konsumsi energi</span><strong class="metric-value" id="stat-kwh">0 <small>kWh</small></strong><span class="metric-foot">Berdasarkan data perangkat</span></article>
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon metric-orange"><svg class="icon"><use href="#i-wallet"/></svg></span><span class="metric-period">/ bulan</span></div><span class="metric-label">Estimasi biaya</span><strong class="metric-value" id="stat-cost">Rp0</strong><span class="metric-foot">Tarif dapat diubah di Pengaturan</span></article>
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon metric-blue"><svg class="icon"><use href="#i-plug"/></svg></span><span class="metric-period">aktif tercatat</span></div><span class="metric-label">Jenis perangkat</span><strong class="metric-value" id="stat-devices">0</strong><span class="metric-foot" id="stat-unit-foot">0 unit perangkat</span></article>
+            <article class="metric-card"><div class="metric-top"><span class="metric-icon metric-green"><svg class="icon"><use href="#i-leaf"/></svg></span><span class="metric-period">/ bulan</span></div><span class="metric-label">Sisa anggaran</span><strong class="metric-value" id="stat-budget">Rp0</strong><span class="metric-foot" id="stat-budget-foot">Atur anggaran di Pengaturan</span></article>
+          </div>
+          <div class="insight-grid">
+            <article class="card panel-consumption"><div class="card-title-row"><div><h3>Konsumsi per perangkat</h3><p class="muted">Estimasi penggunaan kWh setiap bulan</p></div><span class="tag tag-lilac">Bulanan</span></div><div id="device-bars" class="bars-list"></div></article>
+            <article class="card panel-category"><div class="card-title-row"><div><h3>Proporsi kategori</h3><p class="muted">Kontribusi tiap kategori perangkat</p></div></div><div class="donut-layout"><div id="category-donut" class="donut" role="img" aria-label="Proporsi konsumsi listrik"><div class="donut-center"><small>Total</small><b id="donut-total">0</b><small>kWh</small></div></div><div id="category-legend" class="legend-list"></div></div></article>
+          </div>
+          <div class="card budget-card"><div class="budget-card-header"><div><h3>Anggaran listrik bulanan</h3><p class="muted">Bandingkan estimasi biaya dengan target pengeluaranmu.</p></div><strong id="budget-ratio">0%</strong></div><div class="budget-track"><div id="budget-progress" class="budget-progress"></div></div><div class="budget-labels"><span id="budget-used">Terpakai Rp0</span><span id="budget-limit">Anggaran Rp0</span></div></div>
+          <div class="disclaimer"><svg class="icon"><use href="#i-info"/></svg><span>Angka adalah <b>estimasi</b> berdasarkan daya, durasi, jumlah perangkat, hari pemakaian, dan tarif yang kamu input. Bukan pembacaan listrik real-time atau tagihan resmi PLN.</span></div>
+        </section>
+
+        <section id="page-devices" class="page-section" hidden>
+          <div class="card device-panel"><div class="device-toolbar"><div><h3>Daftar perangkatmu</h3><p class="muted">Tambahkan perangkat rumah, kos, atau ruang kerja.</p></div><div class="toolbar-actions"><div class="search-wrap"><svg class="icon"><use href="#i-search"/></svg><input id="device-search" type="search" placeholder="Cari perangkat..." aria-label="Cari perangkat"></div><button id="export-button" class="btn btn-outline btn-sm"><svg class="icon"><use href="#i-download"/></svg> Ekspor CSV</button></div></div><div class="table-scroll"><table class="device-table"><thead><tr><th>Perangkat</th><th>Daya</th><th>Jam/hari</th><th>Hari/bln</th><th>Jumlah</th><th>kWh/bln</th><th>Biaya/bln</th><th class="right">Aksi</th></tr></thead><tbody id="device-tbody"></tbody></table></div><div id="device-empty" class="empty-state" hidden><span>🔌</span><h3>Belum ada perangkat</h3><p>Tambahkan perangkat pertama untuk mulai menghitung penggunaan listrik.</p><button class="btn btn-primary" data-add-device><svg class="icon"><use href="#i-plus"/></svg> Tambah perangkat</button></div></div>
+        </section>
+
+        <section id="page-simulator" class="page-section" hidden>
+          <div class="sim-layout"><article class="card sim-card"><div class="card-title-row"><div><h3>Simulasi durasi pemakaian</h3><p class="muted">Lihat dampak mengurangi jam pemakaian perangkat.</p></div><span class="tag tag-green">Interaktif</span></div><div class="field sim-field"><label for="sim-device">Pilih perangkat</label><select id="sim-device"></select></div><div class="sim-current"><span>Durasi saat ini</span><strong id="sim-old-hours">—</strong></div><div class="range-heading"><label for="sim-hours">Durasi setelah perubahan</label><strong id="sim-new-hours">0 jam/hari</strong></div><input id="sim-hours" class="range-input" type="range" min="0" max="24" step="0.5" value="0"><div class="range-ends"><span>0 jam</span><span>24 jam</span></div><div class="sim-note"><svg class="icon"><use href="#i-info"/></svg> Simulasi tidak mengubah data perangkat aslimu.</div></article><article class="sim-result"><span class="result-eyebrow">HASIL SIMULASI</span><h3 id="sim-result-title">Potensi hemat per bulan</h3><strong id="sim-saving">Rp0</strong><p id="sim-result-subtitle">Pilih perangkat untuk melihat perkiraan penghematan.</p><div class="sim-result-grid"><div><small>Sebelum</small><strong id="sim-before">Rp0</strong></div><div><small>Sesudah</small><strong id="sim-after">Rp0</strong></div></div><div class="sim-bottom"><svg class="icon"><use href="#i-leaf"/></svg> Perubahan biaya hanya berlaku pada perangkat yang dipilih.</div></article></div>
+          <div class="card formula-card"><h3>Bagaimana cara hitungnya?</h3><div class="formula">Energi (kWh/bulan) = Watt × Jam/hari × Hari/bulan × Jumlah ÷ 1.000</div><p>Estimasi biaya = energi (kWh) × tarif listrik (Rp/kWh). Tarif dan pola pemakaian dapat berbeda dengan kondisi sesungguhnya.</p></div>
+        </section>
+
+        <section id="page-settings" class="page-section" hidden>
+          <div class="settings-grid"><article class="card settings-card"><div class="card-title-row"><div><h3>Preferensi pengguna</h3><p class="muted">Personalisasi perhitungan WattWise.</p></div></div><form id="settings-form" class="form-stack"><div class="field"><label for="settings-name">Nama tampilan</label><input id="settings-name" maxlength="60" required></div><div class="field"><label for="settings-tariff">Tarif simulasi (Rp/kWh)</label><input id="settings-tariff" type="number" min="1" max="100000" step="0.01" required><small>Bukan tarif resmi otomatis; sesuaikan dengan golongan listrikmu.</small></div><div class="field"><label for="settings-budget">Anggaran listrik per bulan (Rp)</label><input id="settings-budget" type="number" min="0" max="1000000000" step="1" required></div><button class="btn btn-primary" id="settings-save" type="submit"><svg class="icon"><use href="#i-check"/></svg> Simpan pengaturan</button></form></article><aside class="card account-card"><span class="account-card-icon"><svg class="icon"><use href="#i-shield"/></svg></span><h3>Penyimpanan datamu</h3><p id="account-description">Data perangkat disimpan untuk pengguna yang sedang masuk.</p><div class="account-divider"></div><small>EMAIL AKUN</small><strong id="account-email">—</strong><div class="account-divider"></div><p class="muted">WattWise tidak mengukur listrik secara langsung. Semua perhitungan dilakukan dari angka yang kamu isi.</p></aside></div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="device-modal" class="modal-layer" hidden><div class="modal-backdrop" data-close-modal></div><div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-heading"><div><span class="overline">DATA PERANGKAT</span><h2 id="modal-title">Tambah perangkat</h2></div><button class="icon-button" type="button" data-close-modal aria-label="Tutup"><svg class="icon"><use href="#i-x"/></svg></button></div><form id="device-form" class="form-stack"><div class="field"><label for="device-name">Nama perangkat</label><input id="device-name" maxlength="60" placeholder="Contoh: AC Kamar" required></div><div class="field"><label for="device-category">Kategori</label><select id="device-category"><option value="Pendingin">Pendingin</option><option value="Penerangan">Penerangan</option><option value="Dapur">Dapur</option><option value="Elektronik">Elektronik</option><option value="Lainnya">Lainnya</option></select></div><div class="form-grid"><div class="field"><label for="device-watt">Daya (Watt)</label><input id="device-watt" type="number" min="0.1" max="50000" step="any" placeholder="500" required></div><div class="field"><label for="device-qty">Jumlah unit</label><input id="device-qty" type="number" min="1" max="100" step="1" value="1" required></div><div class="field"><label for="device-hours">Jam per hari</label><input id="device-hours" type="number" min="0" max="24" step="0.5" placeholder="8" required></div><div class="field"><label for="device-days">Hari per bulan</label><input id="device-days" type="number" min="1" max="31" step="1" value="30" required></div></div><div class="modal-estimate">Perkiraan: <strong id="modal-preview">0 kWh/bulan</strong></div><div class="modal-actions"><button class="btn btn-outline" type="button" data-close-modal>Batal</button><button class="btn btn-primary" type="submit" id="device-submit">Simpan perangkat</button></div></form></div></div>
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
