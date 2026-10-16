@@ -142,7 +142,7 @@ function navigate(page){
 }
 function renderAll(){
   if(!state.mode)return;
-  $('mode-badge').textContent=state.mode==='demo'?'MODE DEMO':'FIREBASE LIVE';
+  $('mode-badge').textContent=state.mode==='demo'?'MODE DEMO':'by.HAIKAL';
   $('mode-badge').classList.toggle('is-online',state.mode==='firebase');
   const name=state.profile.displayName||'Pengguna';
   $('top-user-name').textContent=name;$('top-user-caption').textContent=state.mode==='demo'?'Data lokal':'Data Firebase';
